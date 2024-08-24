@@ -9,7 +9,8 @@
 ![docker](https://img.shields.io/badge/docker-blue)
 ![maven](https://img.shields.io/badge/make-red)
 
-- `make start` - runs docker compose and starts the application.
+- `make start-db` - runs docker compose with mongo-express and mongo-db.
+- `make start-app` - runs spring-boot application. ⚠ Running the app using this command does not run it using docker container (yet).
 
 ## Accessing Mongo Express
 
@@ -23,6 +24,8 @@ mongo-express-1  | ------------------------
 mongo-express-1  | 
 ```
 
+Access the mongo-express via browser on `localhost:8081`.
+
 #### Mongo express credentials
 
 See values inside the double quote. These lines also appears on the terminal when mongo-express is ready.
@@ -31,4 +34,17 @@ See values inside the double quote. These lines also appears on the terminal whe
 ```
 mongo-express-1  | Server is open to allow connections from anyone (0.0.0.0)
 mongo-express-1  | basicAuth credentials are "admin:pass", it is recommended you change this in your config.js!
+```
+
+#### Creating the app database
+
+Access mongo-express through the browser and create new database: `simpleDB`.
+
+⚠ This needs to be done before running `make start-app`.
+
+## Accessing the GET endpoint
+
+Run this curl command on your terminal to perform a `GET` request.
+```
+$ curl http://localhost:8080/api/v1/students
 ```
