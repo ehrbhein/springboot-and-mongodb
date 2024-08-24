@@ -35,24 +35,44 @@ public class SpringbootAndMongodbApplication {
       /*
        * @note: We implement a find criteria to search for existing students on the database.
        * It should only insert new student if no other students are found with the same email.
+       *
+       * We can two ways to do this:
+       * scanAndInsertInitialDataUsingQuery(studentRepository, mongoTemplate, student);
        */
-      Criteria criteria = Criteria.where("email").is(student.getEmail());
 
-      Query query = new Query();
-      query.addCriteria(criteria);
-
-      List<Student> students = mongoTemplate.find(query, Student.class);
-
-      if (students.size() > 1) {
-        throw new IllegalStateException("Found more than one student with email: " + student.getEmail());
-
-      } else if (!students.isEmpty()) {
-        System.out.println(student + " already exists.");
-
-      } else {
-        studentRepository.insert(student);
-
-      }
+      // or using this method ⬇
+      scanAndInsertInitialDataUsingRepository(studentRepository, student);
     };
+  }
+
+  private static void scanAndInsertInitialDataUsingRepository(StudentRepository studentRepository, Student student) {
+    studentRepository.findStudentByEmail(student.getEmail()).ifPresentOrElse(success -> {
+
+      System.out.println(success + " already exists.");
+    }, () -> {
+
+      System.out.println("Inserting student " + student);
+      studentRepository.insert(student);
+    });
+  }
+
+  private static void scanAndInsertInitialDataUsingQuery(StudentRepository studentRepository, MongoTemplate mongoTemplate, Student student) {
+    Criteria criteria = Criteria.where("email").is(student.getEmail());
+
+    Query query = new Query();
+    query.addCriteria(criteria);
+
+    List<Student> students = mongoTemplate.find(query, Student.class);
+
+    if (students.size() > 1) {
+      throw new IllegalStateException("Found more than one student with email: " + student.getEmail());
+
+    } else if (!students.isEmpty()) {
+      System.out.println(student + " already exists.");
+
+    } else {
+      studentRepository.insert(student);
+
+    }
   }
 }
