@@ -1,0 +1,252 @@
+openapi: 3.0.3
+info:
+  title: Simple CRUD API
+  description: Simple API with crud based functionalities.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Default springboot host.
+paths:
+  /api/v1/students/{id}:
+    get:
+      summary: Get student with ID
+      operationId: Get_Student
+      parameters:
+        - $ref: '#/components/parameters/studentId'
+      responses:
+        '200':
+          description: Student object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentResponse'
+        '404':
+          description: Student not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update student resource
+      operationId: Update_Student
+      parameters:
+        - $ref: '#/components/parameters/studentId'
+      responses:
+        '200':
+          description: Student object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentResponse'
+        '404':
+          description: Student resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/students:
+    get:
+      summary: Retrieves all students with paginated response
+      operationId: Get_Students
+      parameters:
+      - in: query
+        name: page
+        description: The page number for pagination (zero-based index).
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - in: query
+        name: size
+        description: The numbers of records per page.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      responses:
+        '200':
+          description: List of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudentResponse'
+    post:
+      summary: Add new student
+      operationId: Add_Student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentResponse'
+        '409':
+          description: Request conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  parameters:
+    studentId:
+      in: path
+      name: id
+      schema:
+        type: string
+      description: The id of the student resource
+      required: true
+  schemas:
+    PagedStudentResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentResponse'
+        page:
+          type: object
+          properties:
+            size:
+              type: integer
+              description: The number of records in one page
+            totalElements:
+              type: integer
+              description: The total number or student records
+            totalPages:
+              type: integer
+              description: The total number of retrievable paged student records
+            pageNumber:
+              type: integer
+              description: The number of the current page
+    StudentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user ID
+        firstName:
+          type: string
+          description: The first name of the student
+          example: John
+        lastName:
+          type: string
+          description: The last name of the student
+          example: Doe
+        email:
+          type: string
+          description: The email of the student.
+          example: user_email@google.com
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        country:
+          type: string
+          description: The country of the student's address
+        city:
+          type: string
+          description: The city of the student's address
+          example:
+        postCode:
+          type: string
+          description: The post code of the student's address
+        favouriteSubjects:
+          type: array
+          items:
+            type: string
+        totalSpentInBooks:
+          type: integer
+          description: The total spent in books of the student
+          example: 10
+        created:
+          type: string
+          description: The date and time the student is registered on the system.
+          example: 13:45.30.123456789
+      example:
+        id: "66c989759e380d7303c566fb"
+        firstName: "Jamila"
+        lastName: "Ahmed"
+        email: "jahmed@gmail.com"
+        gender: "FEMALE"
+        country: "England"
+        city: "London"
+        postCode: "NE9"
+        favouriteSubjects:
+          - "Computer Science"
+        totalSpentInBooks: "10"
+        created: "2024-08-24T15:19:17.605"
+    StudentRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: The first name of the student
+          example: John
+        lastName:
+          type: string
+          description: The last name of the student
+          example: Doe
+        email:
+          type: string
+          description: The email of the student.
+          example: user_email@google.com
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        country:
+          type: string
+          description: The country of the student's address
+        city:
+          type: string
+          description: The city of the student's address
+        postCode:
+          type: string
+          description: The post code of the student's address
+        favouriteSubjects:
+          type: array
+          items:
+            type: string
+        totalSpentInBooks:
+          type: integer
+          description: The total spent in books of the student
+      example:
+        firstName: "Jamila"
+        lastName: "Ahmed"
+        email: "jahmed@gmail.com"
+        gender: "FEMALE"
+        country: "England"
+        city: "London"
+        postCode: "NE9"
+        favouriteSubjects:
+          - "Computer Science"
+        totalSpentInBooks: "10"
+    GenderEnum:
+      type: string
+      description: The gender of the student.
+      enum:
+        - MALE
+        - FEMALE
+      example: FEMALE
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The error code the HTTP response
+        message:
+          type: string
+          description: The message of the error response
+      example:
+        errorCode: 409
+        message: Student already exists

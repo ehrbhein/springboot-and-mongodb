@@ -1,0 +1,6 @@
+./target
+./.idea
+./docker
+./http
+.gitignore
+README.md
