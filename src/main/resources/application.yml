@@ -3,11 +3,11 @@ spring:
     name: springboot-and-mongodb
   data:
     mongodb:
-      authentication-database: ${AUTHENTICATION_DATABASE}
-      username: ${MONGODB_DATABASE_USERNAME}
-      password: ${MONGODB_DATABASE_PASSWORD}
-      database: ${MONGODB_DATABASE_NAME} # need to manually create this db on mongo-express
+      authentication-database: admin
+      username: admin
+      password: password
+      database: simpleDB # need to manually create this db on mongo-express
       port: 27017
-      host: ${MONGODB_DATABASE_HOST}
+      host: localhost
 server:
   port: 8080
