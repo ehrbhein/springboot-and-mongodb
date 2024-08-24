@@ -9,5 +9,6 @@ spring:
       database: simpleDB # need to manually create this db on mongo-express
       port: 27017
       host: localhost
+      auto-index-creation: true
 server:
   port: 8080
