@@ -2,8 +2,8 @@ package com.sideproject.springboot_and_mongodb;
 
 import com.sideproject.springboot_and_mongodb.domain.Address;
 import com.sideproject.springboot_and_mongodb.domain.Gender;
-import com.sideproject.springboot_and_mongodb.domain.student.Student;
-import com.sideproject.springboot_and_mongodb.domain.student.StudentRepository;
+import com.sideproject.springboot_and_mongodb.domain.model.student.Student;
+import com.sideproject.springboot_and_mongodb.domain.model.student.StudentRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;

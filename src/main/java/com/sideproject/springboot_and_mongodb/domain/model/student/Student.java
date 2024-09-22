@@ -1,4 +1,4 @@
-package com.sideproject.springboot_and_mongodb.domain.student;
+package com.sideproject.springboot_and_mongodb.domain.model.student;
 
 import com.sideproject.springboot_and_mongodb.domain.Address;
 import com.sideproject.springboot_and_mongodb.domain.Gender;
