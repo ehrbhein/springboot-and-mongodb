@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: Simple CRUD API
+  description: Simple API with crud based functionalities.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Default springboot host.
+paths:
+  /api/v1/students:
+    get:
+      summary: Retrieves all students
+      responses:
+        '200':
+          description: List of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+    post:
+      summary: Add new student
+      responses:
+        '201':
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '409':
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user ID
+        firstName:
+          type: string
+          description: The first name of the student
+          example: John
+        lastName:
+          type: string
+          description: The last name of the student
+          example: Doe
+        email:
+          type: string
+          description: The email of the student.
+          example: user_email@google.com
+        gender:
+          type: string
+          enum: [ MALE, FEMALE ]
+          description: The gender of the student.
+          example: MALE
+        address:
+          type: string
+          description: The address of the student
+          example: Mahogany Street.
+        favouriteSubjects:
+          type: array
+          items:
+            type: string
+        totalSpentInBooks:
+          type: integer
+          description: The total spent in books of the student
+        created:
+          type: string
+          description: The date and time the student is registered on the system.
+          example: 13:45.30.123456789
+    Error:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: The error code the HTTP response
+        message:
+          type: string
+          description: The message of the error response
