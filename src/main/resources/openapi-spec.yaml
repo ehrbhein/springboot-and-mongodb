@@ -41,16 +41,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Student'
+              $ref: '#/components/schemas/StudentRequest'
       responses:
         '201':
-          description:
+          description: Created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Student'
         '409':
-          description:
+          description: Request conflict
           content:
             application/json:
               schema:
@@ -63,6 +63,53 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    StudentRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: The first name of the student
+          example: John
+        lastName:
+          type: string
+          description: The last name of the student
+          example: Doe
+        email:
+          type: string
+          description: The email of the student.
+          example: user_email@google.com
+        gender:
+          type: string
+          enum: [ MALE, FEMALE ]
+          description: The gender of the student.
+          example: MALE
+        address:
+          $ref: '#/components/schemas/Address'
+        favouriteSubjects:
+          type: array
+          items:
+            type: string
+        totalSpentInBooks:
+          type: integer
+          description: The total spent in books of the student
+        created:
+          type: string
+          description: The date and time the student is registered on the system.
+          example: 13:45.30.123456789
+      example:
+        id: "66c989759e380d7303c566fb"
+        firstName: "Jamila"
+        lastName: "Ahmed"
+        email: "jahmed@gmail.com"
+        gender: "FEMALE"
+        address:
+          country: "England"
+          city: "London"
+          postCode: "NE9"
+        favouriteSubjects:
+          - "Computer Science"
+        totalSpentInBooks: "10"
+        created: "2024-08-24T15:19:17.605"
     Student:
       type: object
       properties:
@@ -87,9 +134,7 @@ components:
           description: The gender of the student.
           example: MALE
         address:
-          type: string
-          description: The address of the student
-          example: Mahogany Street.
+          $ref: '#/components/schemas/Address'
         favouriteSubjects:
           type: array
           items:
@@ -101,6 +146,36 @@ components:
           type: string
           description: The date and time the student is registered on the system.
           example: 13:45.30.123456789
+      example:
+        id: "66c989759e380d7303c566fb"
+        firstName: "Jamila"
+        lastName: "Ahmed"
+        email: "jahmed@gmail.com"
+        gender: "FEMALE"
+        address:
+          country: "England"
+          city: "London"
+          postCode: "NE9"
+        favouriteSubjects:
+          - "Computer Science"
+        totalSpentInBooks: "10"
+        created: "2024-08-24T15:19:17.605"
+    Address:
+      type: object
+      properties:
+        country:
+          type: string
+          description: The country of the student's address
+        city:
+          type: string
+          description: The city of the student's address
+        postCode:
+          type: string
+          description: The post code of the student's address
+      example:
+        country: England
+        city: London
+        postCode: NE9
     Error:
       type: object
       properties:
@@ -110,3 +185,6 @@ components:
         message:
           type: string
           description: The message of the error response
+      example:
+        errorCode: 409
+        message: Student already exists
