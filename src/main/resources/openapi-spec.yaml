@@ -7,6 +7,22 @@ servers:
   - url: http://localhost:8080
     description: Default springboot host.
 paths:
+  /api/v1/students/{id}:
+    get:
+      summary: Get student with ID
+      responses:
+        '200':
+          description: Student object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        '404':
+          description: Student not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/v1/students:
     get:
       summary: Retrieves all students
@@ -21,6 +37,11 @@ paths:
                   $ref: '#/components/schemas/Student'
     post:
       summary: Add new student
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
       responses:
         '201':
           description:
@@ -30,6 +51,12 @@ paths:
                 $ref: '#/components/schemas/Student'
         '409':
           description:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '400':
+          description: Bad request
           content:
             application/json:
               schema:
