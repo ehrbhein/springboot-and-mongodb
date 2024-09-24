@@ -1,5 +1,7 @@
 package com.sideproject.springboot_and_mongodb.api;
 
+import com.sideproject.springboot_and_mongodb.domain.model.StudentRequest;
+import com.sideproject.springboot_and_mongodb.domain.model.StudentResponse;
 import com.sideproject.springboot_and_mongodb.domain.model.student.Student;
 import com.sideproject.springboot_and_mongodb.domain.model.student.StudentService;
 import jakarta.validation.Valid;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class StudentController implements ApiApi {
+public class StudentController{
 
   private final StudentService studentService;
 
@@ -24,18 +26,19 @@ public class StudentController implements ApiApi {
 
   @GetMapping
   @RequestMapping("/api/v1/students")
-  public List<Student> fetchAllStudents() {
+  public List<StudentResponse> fetchAllStudents() {
     return studentService.getAllStudents();
   }
 
   @PostMapping(value = "/api/v1/students")
-  public Student addStudent(@RequestBody @Valid Student student) {
-    return studentService.addStudent(student);
+  public StudentResponse addStudent(@RequestBody @Valid StudentRequest request) {
+    return studentService.addStudent(request);
   }
 
   @GetMapping(value = "/api/v1/students/{id}")
   public Student fetchStudent(@PathVariable String id) {
     return studentService.getStudentById(id);
   }
+
 
 }

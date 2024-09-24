@@ -10,15 +10,34 @@ paths:
   /api/v1/students/{id}:
     get:
       summary: Get student with ID
+      parameters:
+        - $ref: '#/components/parameters/studentId'
       responses:
         '200':
           description: Student object
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Student'
+                $ref: '#/components/schemas/StudentResponse'
         '404':
           description: Student not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update student resource
+      parameters:
+        - $ref: '#/components/parameters/studentId'
+      responses:
+        '200':
+          description: Student object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentResponse'
+        '404':
+          description: Student resource not found
           content:
             application/json:
               schema:
@@ -34,7 +53,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Student'
+                  $ref: '#/components/schemas/StudentResponse'
     post:
       summary: Add new student
       requestBody:
@@ -48,7 +67,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Student'
+                $ref: '#/components/schemas/StudentResponse'
         '409':
           description: Request conflict
           content:
@@ -61,56 +80,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
 components:
+  parameters:
+    studentId:
+      in: path
+      name: id
+      schema:
+        type: string
+      description: The id of the student resource
+      required: true
   schemas:
-    StudentRequest:
-      type: object
-      properties:
-        firstName:
-          type: string
-          description: The first name of the student
-          example: John
-        lastName:
-          type: string
-          description: The last name of the student
-          example: Doe
-        email:
-          type: string
-          description: The email of the student.
-          example: user_email@google.com
-        gender:
-          type: string
-          enum: [ MALE, FEMALE ]
-          description: The gender of the student.
-          example: MALE
-        address:
-          $ref: '#/components/schemas/Address'
-        favouriteSubjects:
-          type: array
-          items:
-            type: string
-        totalSpentInBooks:
-          type: integer
-          description: The total spent in books of the student
-        created:
-          type: string
-          description: The date and time the student is registered on the system.
-          example: 13:45.30.123456789
-      example:
-        id: "66c989759e380d7303c566fb"
-        firstName: "Jamila"
-        lastName: "Ahmed"
-        email: "jahmed@gmail.com"
-        gender: "FEMALE"
-        address:
-          country: "England"
-          city: "London"
-          postCode: "NE9"
-        favouriteSubjects:
-          - "Computer Science"
-        totalSpentInBooks: "10"
-        created: "2024-08-24T15:19:17.605"
-    Student:
+    StudentResponse:
       type: object
       properties:
         id:
@@ -133,8 +114,16 @@ components:
           enum: [ MALE, FEMALE ]
           description: The gender of the student.
           example: MALE
-        address:
-          $ref: '#/components/schemas/Address'
+        country:
+          type: string
+          description: The country of the student's address
+        city:
+          type: string
+          description: The city of the student's address
+          example:
+        postCode:
+          type: string
+          description: The post code of the student's address
         favouriteSubjects:
           type: array
           items:
@@ -142,6 +131,7 @@ components:
         totalSpentInBooks:
           type: integer
           description: The total spent in books of the student
+          example: 10
         created:
           type: string
           description: The date and time the student is registered on the system.
@@ -152,17 +142,32 @@ components:
         lastName: "Ahmed"
         email: "jahmed@gmail.com"
         gender: "FEMALE"
-        address:
-          country: "England"
-          city: "London"
-          postCode: "NE9"
+        country: "England"
+        city: "London"
+        postCode: "NE9"
         favouriteSubjects:
           - "Computer Science"
         totalSpentInBooks: "10"
         created: "2024-08-24T15:19:17.605"
-    Address:
+    StudentRequest:
       type: object
       properties:
+        firstName:
+          type: string
+          description: The first name of the student
+          example: John
+        lastName:
+          type: string
+          description: The last name of the student
+          example: Doe
+        email:
+          type: string
+          description: The email of the student.
+          example: user_email@google.com
+        gender:
+          type: string
+          enum: [ MALE, FEMALE ]
+          description: The gender of the student.
         country:
           type: string
           description: The country of the student's address
@@ -172,10 +177,26 @@ components:
         postCode:
           type: string
           description: The post code of the student's address
+        favouriteSubjects:
+          type: array
+          items:
+            type: string
+        totalSpentInBooks:
+          type: integer
+          description: The total spent in books of the student
       example:
-        country: England
-        city: London
-        postCode: NE9
+        id: "66c989759e380d7303c566fb"
+        firstName: "Jamila"
+        lastName: "Ahmed"
+        email: "jahmed@gmail.com"
+        gender: "FEMALE"
+        country: "England"
+        city: "London"
+        postCode: "NE9"
+        favouriteSubjects:
+          - "Computer Science"
+        totalSpentInBooks: "10"
+        created: "2024-08-24T15:19:17.605"
     Error:
       type: object
       properties:
