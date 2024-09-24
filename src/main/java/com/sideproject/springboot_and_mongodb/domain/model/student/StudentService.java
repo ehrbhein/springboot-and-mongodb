@@ -66,16 +66,39 @@ public class StudentService {
     return buildStudentResponse(studentRepository.insert(newStudent));
   }
 
-  public Student getStudentById(String id) {
+  public StudentResponse updateStudent(String id, StudentRequest request) {
+    Optional<Student> existingStudent = studentRepository.findStudentById(id);
+
+    if (existingStudent.isEmpty()) {
+      throw new APINotFoundException("Student not found");
+    }
+
+    Student studentWithUpdatedInfo  = updateStudentWithInfoFromRequest(existingStudent.get(), request);
+    return buildStudentResponse(studentRepository.save(studentWithUpdatedInfo));
+  }
+
+  public StudentResponse getStudentById(String id) {
     Optional<Student> existingStudent = studentRepository.findStudentById(id);
 
     if (existingStudent.isEmpty()) {
       throw new APINotFoundException("Student not found");
     } else {
-      return existingStudent.get();
+      return buildStudentResponse(existingStudent.get());
     }
   }
 
+  private Student updateStudentWithInfoFromRequest(Student student, StudentRequest request) {
+    student.setFirstName(request.getFirstName());
+    student.setLastName(request.getLastName());
+    student.setEmail(request.getEmail());
+    student.setGender(getGender(request.getGender().toString()).get());
+    student.getAddress().setCity(request.getCity());
+    student.getAddress().setCountry(request.getCountry());
+    student.getAddress().setPostCode(request.getPostCode());
+    student.setFavouriteSubjects(request.getFavouriteSubjects());
+
+    return student;
+  }
 
   private Optional<Gender> getGender(String genderString) {
     for (Gender gender : Gender.values()) {
