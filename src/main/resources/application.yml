@@ -3,12 +3,6 @@ spring:
     name: springboot-and-mongodb
   data:
     mongodb:
-      authentication-database: admin
-      username: admin
-      password: password
-      database: simpleDB # need to manually create this db on mongo-express
-      port: 27017
-      host: localhost
-      auto-index-creation: true
+      uri: mongodb://localhost:27017/springboot-and-mongodb?retryWrites=true&w=majority
 server:
   port: 8080
