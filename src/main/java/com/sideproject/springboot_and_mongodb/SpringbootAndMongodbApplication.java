@@ -39,8 +39,6 @@ public class SpringbootAndMongodbApplication {
         .created(LocalDateTime.now())
         .build();
 
-//        , "Ahmed", "jahmed@gmail.com", GenderEnum.FEMALE, address, List.of("Computer Science"), BigDecimal.TEN, LocalDateTime.now());
-
     //  Note: We implement a find criteria to search for existing students on  the database.
     //  It should only insert new student if no other students are found with the same email.
     //

@@ -1,7 +1,6 @@
 package com.sideproject.springboot_and_mongodb.domain.model.student;
 
 import com.sideproject.springboot_and_mongodb.domain.Address;
-import com.sideproject.springboot_and_mongodb.domain.Gender;
 import com.sideproject.springboot_and_mongodb.domain.model.PagedStudentResponse;
 import com.sideproject.springboot_and_mongodb.domain.model.PagedStudentResponsePage;
 import com.sideproject.springboot_and_mongodb.domain.model.StudentRequest;
@@ -93,7 +92,7 @@ public class StudentService {
     student.setFirstName(request.getFirstName());
     student.setLastName(request.getLastName());
     student.setEmail(request.getEmail());
-    student.setGender(getGender(request.getGender().toString()).get());
+    student.setGender(request.getGender());
     student.getAddress().setCity(request.getCity());
     student.getAddress().setCountry(request.getCountry());
     student.getAddress().setPostCode(request.getPostCode());
@@ -102,38 +101,19 @@ public class StudentService {
     return student;
   }
 
-  private Optional<Gender> getGender(String genderString) {
-    for (Gender gender : Gender.values()) {
-      if (gender.name().equalsIgnoreCase(genderString)) {
-        return Optional.of(gender);
-      }
-    }
-
-    return Optional.empty();
-  }
-
   private StudentResponse buildStudentResponse(Student student) {
-    GenderEnum responseGender = null;
-
-    for (GenderEnum gender : GenderEnum.values()) {
-      if (gender.name().equalsIgnoreCase(student.getGender().toString())) {
-        responseGender = gender;
-      }
-    }
-
     return new StudentResponse(
         student.getId(),
         student.getFirstName(),
         student.getLastName(),
         student.getEmail(),
-        responseGender,
+        student.getGender(),
         student.getAddress().getCountry(),
         student.getAddress().getCity(),
         student.getAddress().getPostCode(),
         student.getFavouriteSubjects(),
         Integer.valueOf(student.getTotalSpentInBooks().toString()),
-        student.getCreated().toString()
-    );
+        student.getCreated().toString());
   }
 
 

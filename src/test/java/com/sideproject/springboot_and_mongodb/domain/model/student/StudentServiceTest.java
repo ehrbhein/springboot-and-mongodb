@@ -1,6 +1,5 @@
 package com.sideproject.springboot_and_mongodb.domain.model.student;
 
-import static com.sideproject.springboot_and_mongodb.domain.Gender.MALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.mock;
@@ -65,7 +64,7 @@ class StudentServiceTest {
             it -> it.getData().getFirst().getGender().toString(),
             it -> it.getPage().getTotalPages())
         .contains("firstName",
-            MALE.toString(),
+            GenderEnum.MALE.toString(),
             1);
 
   }
