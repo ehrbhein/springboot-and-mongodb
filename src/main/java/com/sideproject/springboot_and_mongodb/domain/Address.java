@@ -1,9 +1,11 @@
 package com.sideproject.springboot_and_mongodb.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 @AllArgsConstructor
 public class Address {
 

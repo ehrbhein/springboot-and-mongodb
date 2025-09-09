@@ -1,16 +1,14 @@
 package com.sideproject.springboot_and_mongodb;
 
 import com.sideproject.springboot_and_mongodb.domain.Address;
-import com.sideproject.springboot_and_mongodb.domain.Gender;
-import com.sideproject.springboot_and_mongodb.domain.student.Student;
-import com.sideproject.springboot_and_mongodb.domain.student.StudentRepository;
+import com.sideproject.springboot_and_mongodb.domain.model.GenderEnum;
+import com.sideproject.springboot_and_mongodb.domain.model.student.Student;
+import com.sideproject.springboot_and_mongodb.domain.model.student.StudentRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -22,27 +20,35 @@ public class SpringbootAndMongodbApplication {
     SpringApplication.run(SpringbootAndMongodbApplication.class, args);
   }
 
+  // Uncomment this function if you wish to seed the application's data.
+//  @Bean
+//  CommandLineRunner runner(StudentRepository studentRepository, MongoTemplate mongoTemplate) {
+//    return args -> seedData(studentRepository, mongoTemplate);
+//  }
 
-  /*
-   * @info: Succeeding application runs will throw and error when  `auto-index-creation` is enabled
-   * */
-  @Bean
-  CommandLineRunner runner(StudentRepository studentRepository, MongoTemplate mongoTemplate) {
-    return args -> {
-      Address address = new Address("England", "London", "NE9");
-      Student student = new Student("Jamila", "Ahmed", "jahmed@gmail.com", Gender.FEMALE, address, List.of("Computer Science"), BigDecimal.TEN, LocalDateTime.now());
+  private static void seedData(StudentRepository studentRepository, MongoTemplate mongoTemplate) {
+    Address address = new Address("England", "London", "NE9");
+    Student student = Student.builder()
+        .firstName("Jamila")
+        .lastName("Ahmed")
+        .email("jahmed@gmail.com")
+        .gender(GenderEnum.FEMALE)
+        .address(address)
+        .favouriteSubjects(List.of("Computer Science"))
+        .totalSpentInBooks(BigDecimal.TEN)
+        .created(LocalDateTime.now())
+        .build();
 
-      /*
-       * @note: We implement a find criteria to search for existing students on the database.
-       * It should only insert new student if no other students are found with the same email.
-       *
-       * We can two ways to do this:
-       * scanAndInsertInitialDataUsingQuery(studentRepository, mongoTemplate, student);
-       */
+//        , "Ahmed", "jahmed@gmail.com", GenderEnum.FEMALE, address, List.of("Computer Science"), BigDecimal.TEN, LocalDateTime.now());
 
-      // or using this method ⬇
-      scanAndInsertInitialDataUsingRepository(studentRepository, student);
-    };
+    //  Note: We implement a find criteria to search for existing students on  the database.
+    //  It should only insert new student if no other students are found with the same email.
+    //
+    //  We can two ways to do this:
+    // scanAndInsertInitialDataUsingQuery(studentRepository, mongoTemplate, student);
+
+    // or using this method ⬇
+    scanAndInsertInitialDataUsingRepository(studentRepository, student);
   }
 
   private static void scanAndInsertInitialDataUsingRepository(StudentRepository studentRepository, Student student) {

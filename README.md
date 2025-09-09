@@ -12,39 +12,20 @@
 - `make start-db` - runs docker compose with mongo-express and mongo-db.
 - `make start-app` - runs spring-boot application. ⚠ Running the app using this command does not run it using docker container (yet).
 
-## Accessing Mongo Express
+## Accessing the server endpoints
 
-Mongo-express would take time to access mongo database. So if we jump to the browser and try to access it after running `docker compose up`, we would get an error. 💡 Just wait for the these lines to appear on the terminal 👇:
+Use the http file under the `/http` directory together with the `env.json` to make requests to the application.
 
+For more context on how to use http files, refer to either of these guides:
+- https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
+- https://learn.microsoft.com/en-us/aspnet/core/test/http-files?view=aspnetcore-9.0
 
-```
-mongo-express-1  | No custom config.js found, loading config.default.js
-mongo-express-1  | Welcome to mongo-express 1.0.2
-mongo-express-1  | ------------------------
-mongo-express-1  | 
-```
+## Open API documentation
 
-Access the mongo-express via browser on `localhost:8081`.
+Refer to this [file](./src/main/resources/openapi-spec.yaml) for full information of the different endpoints that will allow you to perform CRUD operations.
 
-#### Mongo express credentials
+> If your IDE does not have support to render the openapi-spec, you can use the [free online swagger editor](https://editor.swagger.io/).
 
-See values inside the double quote. These lines also appears on the terminal when mongo-express is ready.
+## Accessing mongodb (local)
 
-
-```
-mongo-express-1  | Server is open to allow connections from anyone (0.0.0.0)
-mongo-express-1  | basicAuth credentials are "admin:pass", it is recommended you change this in your config.js!
-```
-
-#### Creating the app database
-
-Access mongo-express through the browser and create new database: `simpleDB`.
-
-⚠ This needs to be done before running `make start-app`.
-
-## Accessing the GET endpoint
-
-Run this curl command on your terminal to perform a `GET` request.
-```
-$ curl http://localhost:8080/api/v1/students
-```
+Use this connection string: `mongodb://localhost:27017` on your [mongodb client](https://www.mongodb.com/try/download/compass) to connect to the database running on docker container.
