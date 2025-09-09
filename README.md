@@ -25,3 +25,7 @@ For more context on how to use http files, refer to either of these guides:
 Refer to this [file](./src/main/resources/openapi-spec.yaml) for full information of the different endpoints that will allow you to perform CRUD operations.
 
 > If your IDE does not have support to render the openapi-spec, you can use the [free online swagger editor](https://editor.swagger.io/).
+
+## Accessing mongodb (local)
+
+Use this connection string: `mongodb://localhost:27017` on your [mongodb client](https://www.mongodb.com/try/download/compass) to connect to the database running on docker container.
