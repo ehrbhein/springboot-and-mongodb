@@ -2,6 +2,8 @@ package com.sideproject.springboot_and_mongodb.domain.model.student;
 
 import com.sideproject.springboot_and_mongodb.domain.Address;
 import com.sideproject.springboot_and_mongodb.domain.Gender;
+import com.sideproject.springboot_and_mongodb.domain.model.PagedStudentResponse;
+import com.sideproject.springboot_and_mongodb.domain.model.PagedStudentResponsePage;
 import com.sideproject.springboot_and_mongodb.domain.model.StudentRequest;
 import com.sideproject.springboot_and_mongodb.domain.model.StudentResponse;
 import com.sideproject.springboot_and_mongodb.domain.model.StudentResponse.GenderEnum;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,16 +26,21 @@ public class StudentService {
 
   private final StudentRepository studentRepository;
 
-  public List<StudentResponse> getAllStudents() {
+  public PagedStudentResponse getAllStudents(Pageable pageable) {
     List<StudentResponse> studentResponses = new ArrayList<>();
-    List<Student> allStudents = studentRepository.findAll();
+    Page<Student> allStudents = studentRepository.findAll(pageable);
 
     for (Student student : allStudents) {
       StudentResponse responseItem = buildStudentResponse(student);
       studentResponses.add(responseItem);
     }
 
-    return studentResponses;
+    return new PagedStudentResponse(studentResponses,
+        new PagedStudentResponsePage(
+        pageable.getPageSize(),
+        allStudents.getNumberOfElements(),
+        allStudents.getTotalPages(),
+        allStudents.getNumber()));
   }
 
   public StudentResponse addStudent(StudentRequest request) {
@@ -73,7 +82,7 @@ public class StudentService {
       throw new APINotFoundException("Student not found");
     }
 
-    Student studentWithUpdatedInfo  = updateStudentWithInfoFromRequest(existingStudent.get(), request);
+    Student studentWithUpdatedInfo = updateStudentWithInfoFromRequest(existingStudent.get(), request);
     return buildStudentResponse(studentRepository.save(studentWithUpdatedInfo));
   }
 

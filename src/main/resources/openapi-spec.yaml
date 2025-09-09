@@ -10,6 +10,7 @@ paths:
   /api/v1/students/{id}:
     get:
       summary: Get student with ID
+      operationId: Get_Student
       parameters:
         - $ref: '#/components/parameters/studentId'
       responses:
@@ -27,6 +28,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       summary: Update student resource
+      operationId: Update_Student
       parameters:
         - $ref: '#/components/parameters/studentId'
       responses:
@@ -44,7 +46,23 @@ paths:
                 $ref: '#/components/schemas/Error'
   /api/v1/students:
     get:
-      summary: Retrieves all students
+      summary: Retrieves all students with paginated response
+      operationId: Get_Students
+      parameters:
+      - in: query
+        name: page
+        description: The page number for pagination (zero-based index).
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - in: query
+        name: size
+        description: The numbers of records per page.
+        required: false
+        schema:
+          type: integer
+          default: 0
       responses:
         '200':
           description: List of students
@@ -56,6 +74,7 @@ paths:
                   $ref: '#/components/schemas/StudentResponse'
     post:
       summary: Add new student
+      operationId: Add_Student
       requestBody:
         content:
           application/json:
@@ -91,6 +110,28 @@ components:
       description: The id of the student resource
       required: true
   schemas:
+    PagedStudentResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/StudentResponse'
+        page:
+          type: object
+          properties:
+            size:
+              type: integer
+              description: The number of records in one page
+            totalElements:
+              type: integer
+              description: The total number or student records
+            totalPages:
+              type: integer
+              description: The total number of retrievable paged student records
+            pageNumber:
+              type: integer
+              description: The number of the current page
     StudentResponse:
       type: object
       properties:
@@ -185,7 +226,6 @@ components:
           type: integer
           description: The total spent in books of the student
       example:
-        id: "66c989759e380d7303c566fb"
         firstName: "Jamila"
         lastName: "Ahmed"
         email: "jahmed@gmail.com"
@@ -196,7 +236,6 @@ components:
         favouriteSubjects:
           - "Computer Science"
         totalSpentInBooks: "10"
-        created: "2024-08-24T15:19:17.605"
     Error:
       type: object
       properties:

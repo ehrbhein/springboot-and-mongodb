@@ -1,11 +1,14 @@
 package com.sideproject.springboot_and_mongodb.api;
 
+import com.sideproject.springboot_and_mongodb.domain.model.PagedStudentResponse;
 import com.sideproject.springboot_and_mongodb.domain.model.StudentRequest;
 import com.sideproject.springboot_and_mongodb.domain.model.StudentResponse;
 import com.sideproject.springboot_and_mongodb.domain.model.student.StudentService;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +25,10 @@ public class StudentController {
 
   @GetMapping
   @RequestMapping("/api/v1/students")
-  public List<StudentResponse> fetchAllStudents() {
-    return studentService.getAllStudents();
+  public ResponseEntity<PagedStudentResponse> fetchAllStudents(@PageableDefault Pageable pageable) {
+    PagedStudentResponse response = studentService.getAllStudents(pageable);
+
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping(value = "/api/v1/students")
