@@ -1,0 +1,50 @@
+### Variables
+// 💡Note: Remember to set the variable when querying the id of the student.
+@studentId = 68bf88c5d1d1d42d8a93f62c
+
+### POST add student
+POST {{base_url}}/api/v1/students
+Content-Type: application/json
+Accept: application/json
+
+{
+  "firstName": "Jamila",
+  "lastName": "Ahmed",
+  "email": "jahmed@gmail.com",
+  "gender": "FEMALE",
+  "country": "England",
+  "city": "London",
+  "postCode": "NE9",
+  "favouriteSubjects": [
+    "Computer Science"
+  ],
+  "totalSpentInBooks": "10"
+}
+
+### GET all students
+GET {{base_url}}/api/v1/students
+Accept: application/json
+
+
+### GET student
+GET {{base_url}}/api/v1/students/{{studentId}}
+Accept: application/json
+
+### PUT update student
+PUT {{base_url}}/api/v1/students/{{studentId}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "firstName": "Jamila",
+  "lastName": "Ahmed",
+  "email": "jahmed@gmail.com",
+  "gender": "FEMALE",
+  "country": "England",
+  "city": "London Address 2",
+  "postCode": "NE9",
+  "favouriteSubjects": [
+    "Computer Science"
+  ],
+  "totalSpentInBooks": "10"
+}
