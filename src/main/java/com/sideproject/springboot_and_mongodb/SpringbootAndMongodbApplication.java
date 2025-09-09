@@ -1,7 +1,7 @@
 package com.sideproject.springboot_and_mongodb;
 
 import com.sideproject.springboot_and_mongodb.domain.Address;
-import com.sideproject.springboot_and_mongodb.domain.Gender;
+import com.sideproject.springboot_and_mongodb.domain.model.GenderEnum;
 import com.sideproject.springboot_and_mongodb.domain.model.student.Student;
 import com.sideproject.springboot_and_mongodb.domain.model.student.StudentRepository;
 import java.math.BigDecimal;
@@ -28,7 +28,18 @@ public class SpringbootAndMongodbApplication {
 
   private static void seedData(StudentRepository studentRepository, MongoTemplate mongoTemplate) {
     Address address = new Address("England", "London", "NE9");
-    Student student = new Student("Jamila", "Ahmed", "jahmed@gmail.com", Gender.FEMALE, address, List.of("Computer Science"), BigDecimal.TEN, LocalDateTime.now());
+    Student student = Student.builder()
+        .firstName("Jamila")
+        .lastName("Ahmed")
+        .email("jahmed@gmail.com")
+        .gender(GenderEnum.FEMALE)
+        .address(address)
+        .favouriteSubjects(List.of("Computer Science"))
+        .totalSpentInBooks(BigDecimal.TEN)
+        .created(LocalDateTime.now())
+        .build();
+
+//        , "Ahmed", "jahmed@gmail.com", GenderEnum.FEMALE, address, List.of("Computer Science"), BigDecimal.TEN, LocalDateTime.now());
 
     //  Note: We implement a find criteria to search for existing students on  the database.
     //  It should only insert new student if no other students are found with the same email.

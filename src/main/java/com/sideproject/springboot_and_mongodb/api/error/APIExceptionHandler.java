@@ -36,7 +36,7 @@ public class APIExceptionHandler {
 
 
   @ExceptionHandler(APIBadRequestException.class)
-  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<Object> handle400(APINotFoundException exception) {
     log.warn("{}", exception.getMessage());
 

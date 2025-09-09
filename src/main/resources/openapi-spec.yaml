@@ -151,10 +151,7 @@ components:
           description: The email of the student.
           example: user_email@google.com
         gender:
-          type: string
-          enum: [ MALE, FEMALE ]
-          description: The gender of the student.
-          example: MALE
+          $ref: '#/components/schemas/GenderEnum'
         country:
           type: string
           description: The country of the student's address
@@ -206,9 +203,7 @@ components:
           description: The email of the student.
           example: user_email@google.com
         gender:
-          type: string
-          enum: [ MALE, FEMALE ]
-          description: The gender of the student.
+          $ref: '#/components/schemas/GenderEnum'
         country:
           type: string
           description: The country of the student's address
@@ -236,6 +231,13 @@ components:
         favouriteSubjects:
           - "Computer Science"
         totalSpentInBooks: "10"
+    GenderEnum:
+      type: string
+      description: The gender of the student.
+      enum:
+        - MALE
+        - FEMALE
+      example: FEMALE
     Error:
       type: object
       properties:

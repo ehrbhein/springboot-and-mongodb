@@ -6,8 +6,6 @@ import com.sideproject.springboot_and_mongodb.domain.model.PagedStudentResponse;
 import com.sideproject.springboot_and_mongodb.domain.model.PagedStudentResponsePage;
 import com.sideproject.springboot_and_mongodb.domain.model.StudentRequest;
 import com.sideproject.springboot_and_mongodb.domain.model.StudentResponse;
-import com.sideproject.springboot_and_mongodb.domain.model.StudentResponse.GenderEnum;
-import com.sideproject.springboot_and_mongodb.domain.model.error.APIBadRequestException;
 import com.sideproject.springboot_and_mongodb.domain.model.error.APIConflictException;
 import com.sideproject.springboot_and_mongodb.domain.model.error.APINotFoundException;
 import java.math.BigDecimal;
@@ -37,17 +35,17 @@ public class StudentService {
 
     return new PagedStudentResponse(studentResponses,
         new PagedStudentResponsePage(
-        pageable.getPageSize(),
-        allStudents.getNumberOfElements(),
-        allStudents.getTotalPages(),
-        allStudents.getNumber()));
+            pageable.getPageSize(),
+            allStudents.getNumberOfElements(),
+            allStudents.getTotalPages(),
+            allStudents.getNumber()));
   }
 
   public StudentResponse addStudent(StudentRequest request) {
-    Optional<Gender> studentGender = getGender(request.getGender().toString());
+    Optional<Student> existingStudent = studentRepository.findStudentByEmail(request.getEmail());
 
-    if (studentGender.isEmpty()) {
-      throw new APIBadRequestException("Bad request body.");
+    if (existingStudent.isPresent()) {
+      throw new APIConflictException("Student already exists");
     }
 
     Address studentAddress = Address.builder()
@@ -56,22 +54,17 @@ public class StudentService {
         .country(request.getCountry())
         .build();
 
-    Student newStudent = new Student(
-        request.getFirstName(),
-        request.getLastName(),
-        request.getEmail(),
-        studentGender.get(),
-        studentAddress,
-        request.getFavouriteSubjects(),
-        BigDecimal.valueOf(request.getTotalSpentInBooks()),
-        LocalDateTime.now()
-    );
+    Student newStudent = Student.builder()
+        .firstName(request.getFirstName())
+        .lastName(request.getLastName())
+        .email(request.getEmail())
+        .gender(request.getGender())
+        .address(studentAddress)
+        .favouriteSubjects(request.getFavouriteSubjects())
+        .totalSpentInBooks(BigDecimal.valueOf(request.getTotalSpentInBooks()))
+        .created(LocalDateTime.now())
+        .build();
 
-    Optional<Student> existingStudent = studentRepository.findStudentByEmail(request.getEmail());
-
-    if (existingStudent.isPresent()) {
-      throw new APIConflictException("Student already exists");
-    }
     return buildStudentResponse(studentRepository.insert(newStudent));
   }
 

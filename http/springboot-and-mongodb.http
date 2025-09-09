@@ -18,7 +18,7 @@ Accept: application/json
   "favouriteSubjects": [
     "Computer Science"
   ],
-  "totalSpentInBooks": "10"
+  "totalSpentInBooks": 10
 }
 
 ### GET all students
@@ -46,5 +46,5 @@ Content-Type: application/json
   "favouriteSubjects": [
     "Computer Science"
   ],
-  "totalSpentInBooks": "10"
+  "totalSpentInBooks": 10
 }
