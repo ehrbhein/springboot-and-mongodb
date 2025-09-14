@@ -1,8 +1,22 @@
 services:
-  mongodb:
+  db:
     image: mongo:latest
     ports:
       - "27017:27017"
+    networks:
+      mongo_network:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_APPLICATION_NAME=springboot-and-mongodb
+      - SPRING_DATA_MONGODB_URI=mongodb://db:27017/springboot-and-mongodb?retryWrites=true&w=majority
+      - SERVER_PORT=8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
     networks:
       mongo_network:
 
