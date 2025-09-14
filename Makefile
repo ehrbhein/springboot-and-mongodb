@@ -5,3 +5,11 @@ start-app:
 .PHONY: stop-app
 stop-app:
 	docker compose down
+
+.PHONY: build
+build:
+	mvn compile package
+
+.PHONY: clean
+clean:
+	mvn clean

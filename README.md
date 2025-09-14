@@ -1,7 +1,7 @@
 # springboot-mongodb-demo
 
 ![java](https://img.shields.io/badge/java-21-green)
-![maven](https://img.shields.io/badge/maven-3.3.3-yellow)
+![maven](https://img.shields.io/badge/maven-3.8.8-yellow)
 
 ## Running the application
 
@@ -9,8 +9,16 @@
 ![docker](https://img.shields.io/badge/docker-blue)
 ![maven](https://img.shields.io/badge/make-red)
 
-- `make start-db` - runs docker compose with mongo-express and mongo-db.
-- `make start-app` - runs spring-boot application. ⚠ Running the app using this command does not run it using docker container (yet).
+This project provides a `Makefile` to simplify running and managing the application and its dependencies.
+
+### Common Make Commands
+
+- `make start-db` - Runs Docker Compose with MongoDB and Mongo Express for local development.
+- `make start-app` - Runs the Spring Boot application locally (not inside a Docker container).
+- `make build` - Builds the Spring Boot application using Maven.
+- `make clean` - Cleans the Maven build artifacts.
+
+> **Note:** You can view all available make commands by inspecting the `Makefile`.
 
 ## Accessing the server endpoints
 
