@@ -13,8 +13,8 @@ This project provides a `Makefile` to simplify running and managing the applicat
 
 ### Common Make Commands
 
-- `make start-db` - Runs Docker Compose with MongoDB and Mongo Express for local development.
-- `make start-app` - Runs the Spring Boot application locally (not inside a Docker container).
+- `make start-app` - Runs the app and the mongodb database using docker.
+- `make stop-app` - Stops the running instance of the app and mongodb database.
 - `make build` - Builds the Spring Boot application using Maven.
 - `make clean` - Cleans the Maven build artifacts.
 
